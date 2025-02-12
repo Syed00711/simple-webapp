@@ -1,6 +1,9 @@
 package com.microcare.academy;
 
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
@@ -28,7 +31,27 @@ public class ExampleRestAPI {
 	@GET
 	public Response getRequestBody(String data){
 		JSONObject jo=new JSONObject(data);
-		return Response.ok().entity(data).build();
+		return Response.ok().entity("GET METHOD").build();
+	}
+	
+	@Path("/rb")
+	@POST
+	public Response getRequestBodyPost(String data){
+		JSONObject jo=new JSONObject(data);
+		return Response.ok().entity("POST METHOD").build();
+	}
+	@Path("/rb")
+	@PUT
+	public Response getRequestBodyPut(String data){
+		JSONObject jo=new JSONObject(data);
+		return Response.ok().entity("PUT METHOD").build();
+	}
+	
+	@Path("/rb")
+	@DELETE
+	public Response getRequestBodyDelete(String data){
+		JSONObject jo=new JSONObject(data);
+		return Response.ok().entity("DELETE METHOD").build();
 	}
 
 }
