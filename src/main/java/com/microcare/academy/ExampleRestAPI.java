@@ -1,11 +1,15 @@
 package com.microcare.academy;
 
+import java.sql.SQLException;
+import java.util.List;
+
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -21,10 +25,24 @@ public class ExampleRestAPI {
 		return Response.status(Status.BAD_REQUEST).entity("Path variable is "+name +"  and location is "+location).build();
 	}
 	
-	@Path("/rp")
+	@Path("/book")
 	@GET
-	public Response getRequestParam(@QueryParam("name") String name,@QueryParam("id") String id) {
-		return Response.ok().entity("The given id :"+id+" and name is"+name).build();
+	public Response getBook(@QueryParam("id") int id) throws SQLException {
+		BookDB bookDB=new BookDB();
+		Book book= bookDB.getBookData(id);
+		
+		return Response.ok().entity(book.toString()).build();
+	
+	}
+	
+	@Path("/book")
+	@PUT
+	public Response updateBook(@QueryParam("id") int id,@QueryParam("title") String title) throws SQLException {
+		BookDB bookDB=new BookDB();
+ bookDB.updateBookData(id,title);
+		
+		return Response.ok().entity("book updated.").build();
+	
 	}
 	
 	@Path("/rb")
