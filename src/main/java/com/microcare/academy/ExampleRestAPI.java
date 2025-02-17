@@ -19,11 +19,7 @@ import org.json.JSONObject;
 @Path("/")
 public class ExampleRestAPI {
 	
-	@Path("/simple/{name}/{location}")
-	@GET
-	public Response getData(@PathParam("name") String name,@PathParam("location") String location) {
-		return Response.status(Status.BAD_REQUEST).entity("Path variable is "+name +"  and location is "+location).build();
-	}
+
 	
 	@Path("/book")
 	@GET
@@ -45,31 +41,35 @@ public class ExampleRestAPI {
 	
 	}
 	
-	@Path("/rb")
-	@GET
-	public Response getRequestBody(String data){
-		JSONObject jo=new JSONObject(data);
-		return Response.ok().entity("GET METHOD").build();
-	}
-	
-	@Path("/rb")
+	@Path("/book")
 	@POST
-	public Response getRequestBodyPost(String data){
-		JSONObject jo=new JSONObject(data);
-		return Response.ok().entity("POST METHOD").build();
-	}
-	@Path("/rb")
-	@PUT
-	public Response getRequestBodyPut(String data){
-		JSONObject jo=new JSONObject(data);
-		return Response.ok().entity("PUT METHOD").build();
+	public Response createBook(String book) throws SQLException {
+		BookDB bookDB=new BookDB();
+		JSONObject jo=new JSONObject(book);
+		
+		Book book1=new Book();
+		book1.setBookId(Integer.parseInt(jo.getString("bookid")));
+		book1.setTitle(jo.getString("title"));
+		book1.setAuthor(jo.getString("auther"));
+		book1.setPrice(Double.parseDouble(jo.getString("price")));
+		book1.setPublishedDate(Integer.parseInt(jo.getString("publishedyear")));
+ bookDB.createBookData(book1);
+		
+		return Response.ok().entity("book created.").build();
+	
 	}
 	
-	@Path("/rb")
+	@Path("/book")
 	@DELETE
-	public Response getRequestBodyDelete(String data){
-		JSONObject jo=new JSONObject(data);
-		return Response.ok().entity("DELETE METHOD").build();
+	public Response deleteBook(@QueryParam("id") int id) throws SQLException {
+		BookDB bookDB=new BookDB();
+		 bookDB.deleteBookData(id);
+		
+		return Response.ok().entity("Book deleted").build();
+	
 	}
+	
+	
+	
 
 }
